@@ -1,5 +1,5 @@
 {
-  "name": "hello-cli",
+  "name": "ras-push-cli",
   "version": "1.0.0",
   "description": "\"cli demo app\"",
   "main": "bin/index.js",
@@ -9,7 +9,7 @@
   "author": "SD",
   "license": "MIT",
   "bin": {
-    "hello": "./bin/index.js"
+    "push-coin": "./bin/index.js"
   },
   "dependencies": {
     "axios": "^0.26.1",
