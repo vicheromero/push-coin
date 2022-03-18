@@ -2,3 +2,4 @@
 node_modules
 in.log
 *.cfg
+config.json
