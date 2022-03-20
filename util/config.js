@@ -1,4 +1,16 @@
-const fs = require('fs')
+const fs = require('fs');
+const chalk = require("chalk");
+const load = require('loading-cli');
+
+const printInfo = chalk.bgBlack.green;
+const printError = chalk.bgBlack.bold.red;
+
+const spinner = load({
+    "text": "Loading",
+    "color": "green",
+    "interval": 1000,
+    "frames": ["🕐 ", "🕑 ", "🕒 ", "🕓 ", "🕔 ", "🕕 ", "🕖 ", "🕗 ", "🕘 ", "🕙 ", "🕚 "]
+});
 
 function getKey(path, key) {
     let value = undefined;
@@ -18,4 +30,4 @@ function getKey(path, key) {
     }
 }
 
-module.exports = {getKey};
+module.exports = {getKey, printInfo, printError, spinner};

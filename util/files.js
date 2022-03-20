@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const {spinner, printInfo, printError} = require("./config");
+const lng = require("./en");
 
 function createFileorOpen(name = 'file-name', ext = 'txt') {
     return fs.createWriteStream(`${name}.${ext}`, {
@@ -8,12 +10,17 @@ function createFileorOpen(name = 'file-name', ext = 'txt') {
 }
 
 function createFileOverwrite(text = '', name = 'file-name', ext = 'txt') {
-    try {
-        return fs.writeFile(`${name}.${ext}`, text, () => {
+    return new Promise(function (resolve, reject) {
+        fs.writeFile(`${name}.${ext}`, text, (e) => {
+            if (e) {
+                spinner.fail(printError(lng.file.error, e));
+                reject(e);
+            } else {
+                spinner.succeed(printInfo(lng.file.create));
+                resolve(true);
+            }
         });
-    } catch (e) {
-        console.log("Error al crear o escribir archivo " + e);
-    }
+    });
 }
 
 function addLine(varFile, text = '') {
@@ -25,8 +32,8 @@ function addLine(varFile, text = '') {
 }
 
 function readJsonKey(file, key) {
-    const filePath = path.resolve(__dirname,'..',file);
-    let data = fs.readFileSync(filePath,'utf8');
+    const filePath = path.resolve(__dirname, '..', file);
+    let data = fs.readFileSync(filePath, 'utf8');
     data = JSON.parse(data);
     return data[key];
 }

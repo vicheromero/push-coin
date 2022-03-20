@@ -9,7 +9,8 @@
   "author": "SD",
   "license": "MIT",
   "bin": {
-    "push-coin": "./bin/index.js"
+    "push-coin": "./bin/index.js",
+    "push-coin-service": "./bin/service.js"
   },
   "dependencies": {
     "axios": "^0.26.1",
