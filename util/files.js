@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const {spinner, printInfo, printError} = require("./config");
 const lng = require("./en");
+const constates = require("./const");
+const {platform} = require("process");
 
 function createFileorOpen(name = 'file-name', ext = 'txt') {
     return fs.createWriteStream(`${name}.${ext}`, {
@@ -20,6 +22,41 @@ function createFileOverwrite(text = '', name = 'file-name', ext = 'txt') {
                 resolve(true);
             }
         });
+    });
+}
+
+function createFileService() {
+    const appName = constates.appName;
+    const servicesPath = '/lib/systemd/system/';
+    const ext = 'service';
+    const pathWork = path.resolve(__dirname,'..')
+    return new Promise(function (resolve, reject) {
+        const text = "[Unit]\n" +
+            "Description="+appName+" service"+"\n" +
+            "After=multi-user.target\n" +
+            "\n" +
+            "[Service]\n" +
+            "Restart=always\n" +
+            "User=nobody\n" +
+            "Group=nogroup\n" +
+            "ExecStart=push-coin-service\n" +
+            "WorkingDirectory="+pathWork+"\n" +
+            "\n" +
+            "[Install]\n" +
+            "WantedBy=multi-user.target";
+        if(platform==='linux'){
+            fs.writeFile(`${servicesPath}/${appName}.${ext}`, text, (e) => {
+                if (e) {
+                    spinner.fail(printError(lng.file.error, e));
+                    reject(e);
+                } else {
+                    spinner.succeed(printInfo(lng.file.create));
+                    resolve(`${servicesPath}/${appName}.${ext}`);
+                }
+            });
+        }else{
+            console.log(text)
+        }
     });
 }
 
@@ -42,4 +79,4 @@ function closeFile(varFile) {
     varFile.end();
 }
 
-module.exports = {createFileorOpen, createFileOverwrite, addLine, closeFile, readJsonKey};
+module.exports = {createFileorOpen, createFileOverwrite, addLine, closeFile, readJsonKey, createFileService};

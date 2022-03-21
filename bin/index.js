@@ -11,8 +11,15 @@ require('yargs/yargs')(process.argv.slice(2))
     .commandDir('cmds',{recursive:false})
     .demandCommand()
     .help()
+    .check((argv) => {
+        console.log(argv);
+        if (argv) {
+            return true;
+        }
+        throw new Error('Argument check failed: filepath is not a readable file');
+    })
     .fail(function (msg, err, yargs) {
-        console.log(greeting+"\n "+msg);
+        console.log("\n "+msg);
         yargs.showHelp();
         process.exit(1);
     })

@@ -1,3 +1,4 @@
 const equipos = require("./equipo");
+const comandos = require("./comandos");
 
-module.exports = {equipos};
+module.exports = {equipos, comandos};

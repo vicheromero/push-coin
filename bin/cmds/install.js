@@ -1,12 +1,12 @@
-const Pusher = require("pusher-js");
-const {exec} = require("child_process");
 const api = require("../../util/api");
 const {getKey, printInfo, spinner, printError} = require("../../util/config");
-const {equipos} = require("../../services");
-const {createFileorOpen, addLine, createFileOverwrite, readJsonKey} = require("../../util/files");
+const {equipos, comandos} = require("../../services");
+const {createFileOverwrite, createFileService} = require("../../util/files");
 const lng = require("../../util/en");
+const constantes = require("../../util/const");
+const {exec} = require("child_process");
+const constates = require("../../util/const");
 
-let errorLog = createFileorOpen('in', 'log');
 
 
 exports.command = 'install [path]'
@@ -18,53 +18,55 @@ exports.builder = {
     }
 }
 exports.handler = function (argv) {
-    console.log(printInfo(lng.install.file,argv.path));
+    console.log(printInfo(lng.install.file, argv.path));
+    spinner.start();
     const idDevice = getKey(argv.path, "ID");
-    if(idDevice){
-        spinner.info(printInfo(lng.install.start,idDevice));
-        spinner.start(printInfo(lng.steps.start));
+    if (idDevice) {
+        spinner.info(printInfo(lng.install.start, idDevice));
         api.defaults.baseURL = getKey(argv.path, "URL_API");
+        spinner.info(printInfo(lng.steps.start));
         equipos.getId(idDevice).then((response) => {
             spinner.succeed(printInfo(lng.steps.down));
-            createFileOverwrite(JSON.stringify(response), 'config', 'json').then(()=>{
-                subscribePush(response.config, idDevice)
+            createFileOverwrite(JSON.stringify(response), constantes.jsonFileConfig, 'json').then(() => {
+                const fileService = createFileService();
+                exec('chmod 644 '+fileService, (error, stdout, stderr) => {
+                    if (error) {
+                        spinner.fail(printError("Error al dar permisos al servicio", error));
+                        return;
+                    }
+                    if (stderr) {
+                        spinner.fail(printError("Error al dar permisos al servicio 2", stderr));
+                        return;
+                    }
+                    spinner.succeed(printInfo("Se dio permisos al archivo del servicio"));
+                    exec('sudo systemctl daemon-reload', (error, stdout, stderr) => {
+                        if (error) {
+                            spinner.fail(printError("Error al recargar servicios", error));
+                            return;
+                        }
+                        if (stderr) {
+                            spinner.fail(printError("Error al recargar servicios 2", stderr));
+                            return;
+                        }
+                        spinner.succeed(printInfo("Se recargo los servicios creados"));
+                        exec('sudo systemctl enable '+constates.appName+'.service', (error, stdout, stderr) => {
+                            if (error) {
+                                spinner.fail(printError("Error al activar servicio", error));
+                                return;
+                            }
+                            if (stderr) {
+                                spinner.fail(printError("Error al activar servicio 2", stderr));
+                                return;
+                            }
+                            spinner.succeed(printInfo("Se activo el servicio "+constates.appName));
+                        });
+                    });
+                });
             });
-        }).catch((e)=>{
-            spinner.fail(printError(lng.steps.startEr,e));
+        }).catch((e) => {
+            spinner.fail(printError(lng.steps.startEr, e));
         });
-    }else{
-
+    } else {
+        spinner.fail(printError(lng.steps.startEr, e));
     }
-}
-
-function reportError(data, error) {
-    addLine(errorLog, new Date() + "\n" + data + "\n" + error + "\n\n");
-}
-
-function subscribePush(config, deviceId) {
-    const pusher = new Pusher(config.key, {
-        cluster: config.cluster
-    });
-    spinner.succeed(printInfo(lng.push.config));
-    let channel = pusher.subscribe(config.channel);
-    spinner.succeed(printInfo(lng.push.sub));
-    channel.bind(deviceId, function (data) {
-        try {
-            exec(data, (error, stdout, stderr) => {
-                if (error) {
-                    reportError(data, error);
-                    return;
-                }
-                if (stderr) {
-                    reportError(data, error);
-                    return;
-                }
-                console.log(`stdout:\n${stdout}`);
-            });
-        } catch (e) {
-            reportError(data, e);
-        }
-    });
-    spinner.succeed(printInfo(lng.push.succes));
-    spinner.stop();
 }
