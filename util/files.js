@@ -70,7 +70,7 @@ function addLine(varFile, text = '') {
 
 function readJsonKey(file, key) {
     const filePath = path.resolve(__dirname, '..', file);
-    let data = fs.readFileSync(filePath, 'utf8');
+    let data = fs.readFileSync(filePath+'.json', 'utf8');
     data = JSON.parse(data);
     return data[key];
 }
