@@ -28,37 +28,38 @@ exports.handler = function (argv) {
         equipos.getId(idDevice).then((response) => {
             spinner.succeed(printInfo(lng.steps.down));
             createFileOverwrite(JSON.stringify(response), constantes.jsonFileConfig, 'json').then(() => {
-                const fileService = createFileService();
-                exec('chmod 644 '+fileService, (error, stdout, stderr) => {
-                    if (error) {
-                        spinner.fail(printError("Error al dar permisos al servicio", error));
-                        return;
-                    }
-                    if (stderr) {
-                        spinner.fail(printError("Error al dar permisos al servicio 2", stderr));
-                        return;
-                    }
-                    spinner.succeed(printInfo("Se dio permisos al archivo del servicio"));
-                    exec('sudo systemctl daemon-reload', (error, stdout, stderr) => {
+                createFileService().then((fileService)=>{
+                    exec('chmod 644 '+fileService, (error, stdout, stderr) => {
                         if (error) {
-                            spinner.fail(printError("Error al recargar servicios", error));
+                            spinner.fail(printError("Error al dar permisos al servicio", error));
                             return;
                         }
                         if (stderr) {
-                            spinner.fail(printError("Error al recargar servicios 2", stderr));
+                            spinner.fail(printError("Error al dar permisos al servicio 2", stderr));
                             return;
                         }
-                        spinner.succeed(printInfo("Se recargo los servicios creados"));
-                        exec('sudo systemctl enable '+constates.appName+'.service', (error, stdout, stderr) => {
+                        spinner.succeed(printInfo("Se dio permisos al archivo del servicio"));
+                        exec('sudo systemctl daemon-reload', (error, stdout, stderr) => {
                             if (error) {
-                                spinner.fail(printError("Error al activar servicio", error));
+                                spinner.fail(printError("Error al recargar servicios", error));
                                 return;
                             }
                             if (stderr) {
-                                spinner.fail(printError("Error al activar servicio 2", stderr));
+                                spinner.fail(printError("Error al recargar servicios 2", stderr));
                                 return;
                             }
-                            spinner.succeed(printInfo("Se activo el servicio "+constates.appName));
+                            spinner.succeed(printInfo("Se recargo los servicios creados"));
+                            exec('sudo systemctl enable '+constates.appName+'.service', (error, stdout, stderr) => {
+                                if (error) {
+                                    spinner.fail(printError("Error al activar servicio", error));
+                                    return;
+                                }
+                                if (stderr) {
+                                    spinner.fail(printError("Error al activar servicio 2", stderr));
+                                    return;
+                                }
+                                spinner.succeed(printInfo("Se activo el servicio "+constates.appName));
+                            });
                         });
                     });
                 });

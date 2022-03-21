@@ -27,7 +27,7 @@ function createFileOverwrite(text = '', name = 'file-name', ext = 'txt') {
 
 function createFileService() {
     const appName = constates.appName;
-    const servicesPath = '/lib/systemd/system/';
+    const servicesPath = '/lib/systemd/system';
     const ext = 'service';
     const pathWork = path.resolve(__dirname,'..')
     return new Promise(function (resolve, reject) {
