@@ -1,9 +1,4 @@
 #!/usr/bin/env node
-const chalk = require("chalk");
-const boxen = require("boxen");
-const loading =  require('loading-cli');
-const validator = require("validator");
-
 require('yargs/yargs')(process.argv.slice(2))
     .usage("\nUsage: command --path optional")
     .example("install wfg.cfg","Installs the push service based on the settings in the cfg file.")
