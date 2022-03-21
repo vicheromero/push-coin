@@ -12,7 +12,6 @@ require('yargs/yargs')(process.argv.slice(2))
     .demandCommand()
     .help()
     .check((argv) => {
-        console.log(argv);
         if (argv) {
             return true;
         }

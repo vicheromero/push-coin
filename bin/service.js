@@ -4,9 +4,10 @@ const {spinner, printInfo} = require("../util/config");
 const lng = require("../util/en");
 const {comandos, equipos} = require("../services");
 const constates = require("../util/const");
-const {createFileOverwrite} = require("../util/files");
+const {createFileOverwrite, readJsonKey} = require("../util/files");
 const {platform} = require("process");
 const {exec} = require("child_process");
+const constantes = require("../util/const");
 
 function subscribePush(config, deviceId) {
     const pusher = new Pusher(config.key, {
@@ -41,3 +42,5 @@ function subscribePush(config, deviceId) {
     spinner.succeed(printInfo(lng.push.succes));
     spinner.stop();
 }
+
+subscribePush(readJsonKey(constantes.jsonFileConfig,'config'),readJsonKey(constantes.jsonFileConfig,'id_eq'))

@@ -8,7 +8,6 @@ const {exec} = require("child_process");
 const constates = require("../../util/const");
 
 
-
 exports.command = 'install [path]'
 exports.aliases = ['i']
 exports.describe = 'Install push service with config file'
@@ -28,8 +27,8 @@ exports.handler = function (argv) {
         equipos.getId(idDevice).then((response) => {
             spinner.succeed(printInfo(lng.steps.down));
             createFileOverwrite(JSON.stringify(response), constantes.jsonFileConfig, 'json').then(() => {
-                createFileService().then((fileService)=>{
-                    exec('chmod 644 '+fileService, (error, stdout, stderr) => {
+                createFileService().then((fileService) => {
+                    exec('chmod 644 ' + fileService, (error, stdout, stderr) => {
                         if (error) {
                             spinner.fail(printError("Error al dar permisos al servicio", error));
                             return;
@@ -49,7 +48,7 @@ exports.handler = function (argv) {
                                 return;
                             }
                             spinner.succeed(printInfo("Se recargo los servicios creados"));
-                            exec('sudo systemctl enable '+constates.appName+'.service', (error, stdout, stderr) => {
+                            exec('sudo systemctl enable ' + constates.appName, (error, stdout, stderr) => {
                                 if (error) {
                                     spinner.fail(printError("Error al activar servicio", error));
                                     return;
@@ -58,7 +57,18 @@ exports.handler = function (argv) {
                                     spinner.fail(printError("Error al activar servicio 2", stderr));
                                     return;
                                 }
-                                spinner.succeed(printInfo("Se activo el servicio "+constates.appName));
+                                spinner.succeed(printInfo("Se activo el servicio " + constates.appName));
+                                exec('sudo systemctl start ' + constates.appName, (error, stdout, stderr) => {
+                                    if (error) {
+                                        spinner.fail(printError("Error al empezar servicio", error));
+                                        return;
+                                    }
+                                    if (stderr) {
+                                        spinner.fail(printError("Error al empeazr servicio 2", stderr));
+                                        return;
+                                    }
+                                    spinner.succeed(printInfo("Se inicio el servicio " + constates.appName));
+                                });
                             });
                         });
                     });
