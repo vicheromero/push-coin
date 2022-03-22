@@ -41,6 +41,6 @@ npm install -g https://github.com/serobalino/push-coin
 ### Instalación
 Recuerda ejecutar el instalador con permisos de administrador y el archivo de configuración
 ````shell
-sudo push-coin configuration.cfg 
+sudo push-coin install configuration.cfg 
 ````
 
