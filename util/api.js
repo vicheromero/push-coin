@@ -17,7 +17,8 @@ api.interceptors.response.use(
     (response) => {
         return response.status === 200 ? response.data : response;
     },
-    async (error) => {
+    (error) => {
+        console.log(error.response.data);
         return Promise.reject(error)
     }
 )
