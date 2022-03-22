@@ -28,6 +28,7 @@ exports.handler = function (argv) {
             spinner.succeed(printInfo(lng.steps.down));
             spinner.start();
             createFileOverwrite(JSON.stringify(response), constantes.jsonFileConfig, 'json').then(() => {
+                exec(`sudo chmod 777 ${constantes.jsonFileConfig}.json`);
                 spinner.start();
                 createFileService(argv.path).then((fileService) => {
                     spinner.start();
