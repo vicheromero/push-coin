@@ -5,7 +5,7 @@ const PREFIJO = "/api/comandos";
 function update(id, salida, exito = false) {
     return api.put(`${PREFIJO}/${id}`, {
         out: salida,
-        success: exito
+        success: exito ? 1 : 0
     });
 }
 
