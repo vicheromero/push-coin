@@ -53,20 +53,20 @@ exports.handler = function (argv) {
                             }
                             spinner.succeed(printInfo(lng.install.reload));
                             spinner.start();
-                            exec('sudo systemctl enable ' + constates.appName, (error, stdout, stderr) => {
+                            exec('sudo systemctl enable ' + constantes.appName, (error, stdout, stderr) => {
                                 if (error) {
                                     spinner.fail(printError(lng.install.activeE, error));
                                     return;
                                 }
                                 spinner.succeed(printInfo(lng.install.activeE));
                                 spinner.start();
-                                exec('sudo systemctl start ' + constates.appName, (error, stdout, stderr) => {
+                                exec('sudo systemctl start ' + constantes.appName, (error, stdout, stderr) => {
                                     if (error) {
                                         spinner.fail(printError(lng.install.inie, error));
                                         return;
                                     }
                                     spinner.succeed(printInfo(lng.install.active));
-                                    spinner.warn(printError(lng.install.alert,argv.path));
+                                    spinner.warn(printError(lng.install.alert, argv.path));
                                     spinner.stop();
                                 });
                             });
@@ -78,6 +78,6 @@ exports.handler = function (argv) {
             spinner.fail(printError(lng.steps.startEr, e));
         });
     } else {
-        spinner.fail(printError(lng.steps.startEr,"no ID on config file."));
+        spinner.fail(printError(lng.steps.startEr, "no ID on config file."));
     }
 }
