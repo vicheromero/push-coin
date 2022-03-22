@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-let headers = {
+const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
 };

@@ -1,16 +1,15 @@
-const api = require("../../util/api");
 const {getKey, printInfo, spinner, printError} = require("../../util/config");
-const {equipos, comandos} = require("../../services");
 const {createFileOverwrite, createFileService} = require("../../util/files");
-const lng = require("../../util/en");
 const constantes = require("../../util/const");
+const {equipos} = require("../../services");
 const {exec} = require("child_process");
-const constates = require("../../util/const");
+const api = require("../../util/api");
+const lng = require("../../util/en");
 
 
-exports.command = 'install [path]'
+exports.command = 'install <path>'
 exports.aliases = ['i']
-exports.describe = 'Install push service with config file'
+exports.describe = lng.labels.install.describe
 exports.builder = {
     path: {
         default: './wfg.cfg'
@@ -24,42 +23,51 @@ exports.handler = function (argv) {
         spinner.info(printInfo(lng.install.start, idDevice));
         api.defaults.baseURL = getKey(argv.path, "URL_API");
         spinner.info(printInfo(lng.steps.start));
+        spinner.start();
         equipos.getId(idDevice).then((response) => {
             spinner.succeed(printInfo(lng.steps.down));
+            spinner.start();
             createFileOverwrite(JSON.stringify(response), constantes.jsonFileConfig, 'json').then(() => {
+                spinner.start();
                 createFileService(argv.path).then((fileService) => {
+                    spinner.start();
                     exec('chmod 644 ' + fileService, (error, stdout, stderr) => {
                         if (error) {
-                            spinner.fail(printError("Error al dar permisos al servicio", error));
+                            spinner.fail(printError(lng.install.permisos, error));
                             return;
                         }
                         if (stderr) {
-                            spinner.fail(printError("Error al dar permisos al servicio 2", stderr));
+                            spinner.fail(printError(lng.install.permisos, stderr));
                             return;
                         }
-                        spinner.succeed(printInfo("Se dio permisos al archivo del servicio"));
+                        spinner.succeed(printInfo(lng.install.permisosSuc));
+                        spinner.start();
                         exec('sudo systemctl daemon-reload', (error, stdout, stderr) => {
                             if (error) {
-                                spinner.fail(printError("Error al recargar servicios", error));
+                                spinner.fail(printError(lng.install.reloadE, error));
                                 return;
                             }
                             if (stderr) {
-                                spinner.fail(printError("Error al recargar servicios 2", stderr));
+                                spinner.fail(printError(lng.install.reloadE, stderr));
                                 return;
                             }
-                            spinner.succeed(printInfo("Se recargo los servicios creados"));
+                            spinner.succeed(printInfo(lng.install.reload));
+                            spinner.start();
                             exec('sudo systemctl enable ' + constates.appName, (error, stdout, stderr) => {
                                 if (error) {
-                                    spinner.fail(printError("Error al activar servicio", error));
+                                    spinner.fail(printError(lng.install.activeE, error));
                                     return;
                                 }
-                                spinner.succeed(printInfo("Se activo el servicio " + constates.appName));
+                                spinner.succeed(printInfo(lng.install.activeE));
+                                spinner.start();
                                 exec('sudo systemctl start ' + constates.appName, (error, stdout, stderr) => {
                                     if (error) {
-                                        spinner.fail(printError("Error al empezar servicio", error));
+                                        spinner.fail(printError(lng.install.inie, error));
                                         return;
                                     }
-                                    spinner.succeed(printInfo("Se inicio el servicio " + constates.appName));
+                                    spinner.succeed(printInfo(lng.install.active));
+                                    spinner.warn(printError(lng.install.alert,argv.path));
+                                    spinner.stop();
                                 });
                             });
                         });
@@ -70,6 +78,6 @@ exports.handler = function (argv) {
             spinner.fail(printError(lng.steps.startEr, e));
         });
     } else {
-        spinner.fail(printError(lng.steps.startEr, e));
+        spinner.fail(printError(lng.steps.startEr,"no ID on config file."));
     }
 }

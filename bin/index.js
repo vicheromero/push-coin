@@ -1,35 +1,26 @@
 #!/usr/bin/env node
-require('yargs/yargs')(process.argv.slice(2))
-    .usage("\nUsage: command --path optional")
-    .example("install wfg.cfg","Installs the push service based on the settings in the cfg file.")
+const {labels} = require("../util/en");
+const yargs = require('yargs/yargs');
+
+yargs(process.argv.slice(2))
+    .usage(`\n${labels.index.usage}`)
+    .example(labels.index.example1, labels.index.example2)
     .strict()
-    .commandDir('cmds',{recursive:false})
+    .commandDir('cmds', {recursive: false})
     .demandCommand()
     .help()
     .check((argv) => {
         if (argv) {
             return true;
         }
-        throw new Error('Argument check failed: filepath is not a readable file');
+        throw new Error(labels.index.error);
     })
     .fail(function (msg, err, yargs) {
-        console.log("\n "+msg);
+        console.log("\n " + msg);
         yargs.showHelp();
         process.exit(1);
     })
-    .describe("help", "Show help.") // Override --help usage message.
-    .describe("version", "Show version number.") // Override --version usage message.
-    .epilog("Copyright 2022")
+    .describe(labels.index.describe1, labels.index.describe2)
+    .describe(labels.index.describe3, labels.index.describe4)
+    .epilog(labels.index.epilog)
     .argv;
-
-// const load = loading("Welcome to Push Events on nodeJS").start()
-//
-// setTimeout(function(){
-//     load.color = 'yellow';
-//     load.text = ' Loading rainbows';
-// },2000)
-//
-// // stop
-// setTimeout(function(){
-//     load.stop()
-// },3000)

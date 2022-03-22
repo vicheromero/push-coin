@@ -6,6 +6,4 @@ const constantes = {
 }
 
 
-
-
 module.exports = constantes;

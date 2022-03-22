@@ -29,33 +29,34 @@ function createFileService(configFile) {
     const appName = constates.appName;
     const servicesPath = '/lib/systemd/system';
     const ext = 'service';
-    const pathWork = path.resolve(__dirname,'..')
+    const pathWork = path.resolve(__dirname, '..')
     return new Promise(function (resolve, reject) {
         const text = "[Unit]\n" +
-            "Description="+appName+" service"+"\n" +
+            "Description=" + appName + " service" + "\n" +
             "After=multi-user.target\n" +
             "\n" +
             "[Service]\n" +
             "Restart=always\n" +
             "User=nobody\n" +
             "Group=nogroup\n" +
-            "ExecStart=push-coin-service configure "+configFile+"\n" +
-            "WorkingDirectory="+pathWork+"\n" +
+            "ExecStart=push-coin-service configure " + configFile + "\n" +
+            "WorkingDirectory=" + pathWork + "\n" +
             "\n" +
             "[Install]\n" +
             "WantedBy=multi-user.target";
-        if(platform==='linux'){
+        if (platform === 'linux') {
             fs.writeFile(`${servicesPath}/${appName}.${ext}`, text, (e) => {
                 if (e) {
-                    spinner.fail(printError(lng.file.error, e));
+                    spinner.fail(printError(lng.install.serviceE, e));
                     reject(e);
                 } else {
-                    spinner.succeed(printInfo(lng.file.create));
+                    spinner.succeed(printInfo(lng.install.service, configFile));
                     resolve(`${servicesPath}/${appName}.${ext}`);
                 }
             });
-        }else{
-            console.log(text)
+        } else {
+            spinner.fail(printError(lng.install.serviceOS));
+            reject(lng.install.serviceOS);
         }
     });
 }
@@ -64,13 +65,13 @@ function addLine(varFile, text = '') {
     try {
         varFile.write(text, "UTF8");
     } catch (e) {
-        console.log("Error al escribir el archivo " + e);
+        console.log(printError(lng.file.write));
     }
 }
 
 function readJsonKey(file, key) {
     const filePath = path.resolve(__dirname, '..', file);
-    let data = fs.readFileSync(filePath+'.json', 'utf8');
+    let data = fs.readFileSync(filePath + '.json', 'utf8');
     data = JSON.parse(data);
     return data[key];
 }

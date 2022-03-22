@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 const Pusher = require("pusher-js");
+const {exec} = require("child_process");
+const {platform} = require("process");
+const {createFileOverwrite, readJsonKey} = require("../util/files");
 const {spinner, printInfo, getKey} = require("../util/config");
-const lng = require("../util/en");
 const {comandos, equipos} = require("../services");
 const constates = require("../util/const");
-const {createFileOverwrite, readJsonKey} = require("../util/files");
-const {platform} = require("process");
-const {exec} = require("child_process");
-const constantes = require("../util/const");
 const api = require("../util/api");
+const lng = require("../util/en");
 
 function subscribePush(config, deviceId, configPath) {
     const pusher = new Pusher(config.key, {
@@ -49,8 +48,7 @@ require('yargs/yargs')(process.argv.slice(2))
     .command({
         command: 'configure <path>',
         aliases: ['config'],
-        desc: 'Set a config file',
-        builder: (yargs) => yargs.default('value', 'true'),
+        desc: lng.labels.service.describe,
         handler: (argv) => {
             subscribePush(readJsonKey(constantes.jsonFileConfig,'config'),readJsonKey(constantes.jsonFileConfig,'id_eq'),argv.path)
         }
