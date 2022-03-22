@@ -65,7 +65,7 @@ exports.handler = function (argv) {
                                         spinner.fail(printError(lng.install.inie, error));
                                         return;
                                     }
-                                    spinner.succeed(printInfo(lng.install.active));
+                                    spinner.succeed(printInfo(lng.install.ini));
                                     spinner.warn(printError(lng.install.alert, argv.path));
                                     spinner.stop();
                                 });
