@@ -2,23 +2,23 @@ const lng = {
     install: {
         file: "Starting installation with configuration file: ",
         start: "Configuring as a device with ID",
-        permisos: "Error al dar permisos al archivo de permisos",
-        permisosSuc: "Permisos para ejecutar el archivo de servicio.",
-        reload: "Recargando lista de servicios",
-        reloadE: "Error al recargar lista de servicios",
-        activeE: "Error al activar el servicio en el Sistema operativo",
-        active: "Se ha activado el servicio en el sistema operativo",
-        inie: "Error al iniciar el servicio",
-        ini: "Se ha iniciado con exito el servicio",
-        serviceE: "Error al escribir el archivo generado de servicio",
-        service: "Se ha creado el archivo de servicio con la configuracion: ",
-        serviceOS: "La creacion de un demonio solo esta activa para Linux",
-        alert: "Por favor nunca elimine el archivo de configuracion ",
+        permisos: "Error giving permissions",
+        permisosSuc: "Permissions to run the service file.",
+        reload: "Reloading list of services",
+        reloadE: "Error reloading list of services",
+        activeE: "Error activating the service in the operating system",
+        active: "The service has been activated in the operating system",
+        inie: "Failed to start service",
+        ini: "The service has been started successfully",
+        serviceE: "Error writing service generated file",
+        service: "The service file has been created with the configuration: ",
+        serviceOS: "Creating a daemon is only active for Linux",
+        alert: "Please never delete the configuration file",
     },
     steps: {
         start: "Starting connection to the server",
         startEr: "Error connecting to server",
-        errNoId: "Error, no existe id configurado",
+        errNoId: "Error, there is no configured id",
         down: "Configuration download successful",
         update: "Configuration file update",
         service: "Starting background service",
@@ -26,15 +26,15 @@ const lng = {
     file: {
         create: "File created successfully",
         error: "Error creating file: ",
-        write: "Error al escribir el file: ",
-        config: "Parametro no encontrado:",
+        write: "Error writing file: ",
+        config: "Parameter not found:",
         loading: "Loading",
     },
     push: {
-        config: "Configuracion de push exitoso",
-        channel: "Creación de canal exitosa",
-        sub: "Subcribiendose al canal",
-        succes: "Servicio listo",
+        config: "Successful push configuration",
+        channel: "Successful channel creation",
+        sub: "Subscribing to the channel",
+        succes: "Service ready",
     },
     labels: {
         index: {
@@ -46,13 +46,13 @@ const lng = {
             describe3: "version",
             describe4: "Show version number.",
             epilog: "Copyright 2022",
-            error: "Necesitas poner argumentos al comando",
+            error: "You need to put arguments to the command",
         },
         install: {
             describe: "Install push service with config file"
         },
         service: {
-            describe: "Configurar el servicio con archivo"
+            describe: "Configure the service with file"
         }
 
     }
