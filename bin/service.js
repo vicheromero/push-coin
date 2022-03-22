@@ -37,6 +37,9 @@ function subscribePush(config, deviceId, configPath) {
         }
     });
     channel.bind(constates.eventConfig, function () {
+        exec('pwd', (error, stdout, stderr) => {
+           console.log('salida',stdout)
+        });
         equipos.getId(deviceId).then((response) => {
             createFileOverwrite(JSON.stringify(response), constantes.jsonFileConfig, 'json')
         });
