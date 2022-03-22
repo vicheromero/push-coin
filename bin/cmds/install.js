@@ -58,7 +58,7 @@ exports.handler = function (argv) {
                                     spinner.fail(printError(lng.install.activeE, error));
                                     return;
                                 }
-                                spinner.succeed(printInfo(lng.install.activeE));
+                                spinner.succeed(printInfo(lng.install.active));
                                 spinner.start();
                                 exec('sudo systemctl start ' + constantes.appName, (error, stdout, stderr) => {
                                     if (error) {

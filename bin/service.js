@@ -8,6 +8,7 @@ const {comandos, equipos} = require("../services");
 const constates = require("../util/const");
 const api = require("../util/api");
 const lng = require("../util/en");
+const constantes = require("../util/const");
 
 function subscribePush(config, deviceId, configPath) {
     const pusher = new Pusher(config.key, {
