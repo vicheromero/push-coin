@@ -9,13 +9,12 @@ const {platform} = require("process");
 const {exec} = require("child_process");
 const constantes = require("../util/const");
 const api = require("../util/api");
-const yargs = require('yargs');
 
-function subscribePush(config, deviceId) {
+function subscribePush(config, deviceId, configPath) {
     const pusher = new Pusher(config.key, {
         cluster: config.cluster
     });
-    api.defaults.baseURL = getKey(argv.path, "URL_API");
+    api.defaults.baseURL = getKey(configPath, "URL_API");
     spinner.succeed(printInfo(lng.push.config));
     let channel = pusher.subscribe(deviceId);
     spinner.succeed(printInfo(lng.push.sub));
@@ -46,9 +45,17 @@ function subscribePush(config, deviceId) {
     spinner.stop();
 }
 
-const argv = yargs(process.argv.splice(2))
-    .command('path', 'path of file configuration', () => {},)
-    .strict()
-    .argv;
-
-subscribePush(readJsonKey(constantes.jsonFileConfig,'config'),readJsonKey(constantes.jsonFileConfig,'id_eq'))
+require('yargs/yargs')(process.argv.slice(2))
+    .command({
+        command: 'configure <path>',
+        aliases: ['config'],
+        desc: 'Set a config file',
+        builder: (yargs) => yargs.default('value', 'true'),
+        handler: (argv) => {
+            subscribePush(readJsonKey(constantes.jsonFileConfig,'config'),readJsonKey(constantes.jsonFileConfig,'id_eq'),argv.path)
+        }
+    })
+    .demandCommand()
+    .help()
+    .wrap(72)
+    .argv

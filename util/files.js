@@ -25,7 +25,7 @@ function createFileOverwrite(text = '', name = 'file-name', ext = 'txt') {
     });
 }
 
-function createFileService() {
+function createFileService(configFile) {
     const appName = constates.appName;
     const servicesPath = '/lib/systemd/system';
     const ext = 'service';
@@ -39,7 +39,7 @@ function createFileService() {
             "Restart=always\n" +
             "User=nobody\n" +
             "Group=nogroup\n" +
-            "ExecStart=push-coin-service\n" +
+            "ExecStart=push-coin-service configure "+configFile+"\n" +
             "WorkingDirectory="+pathWork+"\n" +
             "\n" +
             "[Install]\n" +

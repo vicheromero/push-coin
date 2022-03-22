@@ -27,7 +27,7 @@ exports.handler = function (argv) {
         equipos.getId(idDevice).then((response) => {
             spinner.succeed(printInfo(lng.steps.down));
             createFileOverwrite(JSON.stringify(response), constantes.jsonFileConfig, 'json').then(() => {
-                createFileService().then((fileService) => {
+                createFileService(argv.path).then((fileService) => {
                     exec('chmod 644 ' + fileService, (error, stdout, stderr) => {
                         if (error) {
                             spinner.fail(printError("Error al dar permisos al servicio", error));
