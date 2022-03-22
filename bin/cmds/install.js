@@ -53,18 +53,10 @@ exports.handler = function (argv) {
                                     spinner.fail(printError("Error al activar servicio", error));
                                     return;
                                 }
-                                if (stderr) {
-                                    spinner.fail(printError("Error al activar servicio 2", stderr));
-                                    return;
-                                }
                                 spinner.succeed(printInfo("Se activo el servicio " + constates.appName));
                                 exec('sudo systemctl start ' + constates.appName, (error, stdout, stderr) => {
                                     if (error) {
                                         spinner.fail(printError("Error al empezar servicio", error));
-                                        return;
-                                    }
-                                    if (stderr) {
-                                        spinner.fail(printError("Error al empeazr servicio 2", stderr));
                                         return;
                                     }
                                     spinner.succeed(printInfo("Se inicio el servicio " + constates.appName));
