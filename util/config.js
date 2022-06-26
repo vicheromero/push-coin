@@ -34,4 +34,22 @@ function getKey(path, key) {
     }
 }
 
-module.exports = {getKey, printInfo, printError, spinner};
+function ejectCommand(command,msgError) {
+    return new Promise(function (resolve, reject) {
+        exec(command, (error, stdout, stderr) => {
+            if(error){
+                console.log(printError(msgError && error));
+                reject(error)
+                return error;
+            }
+            if(stderr){
+                console.log(printError(stderr));
+                reject(stderr)
+                return stderr;
+            }
+            resolve(stdout);
+        })
+    })
+}
+
+module.exports = {getKey, printInfo, printError, spinner, ejectCommand};
