@@ -2,6 +2,7 @@ const fs = require('fs');
 const chalk = require("chalk");
 const load = require('loading-cli');
 const {file} = require("./en");
+const {exec} = require("child_process");
 
 const printInfo = chalk.bgBlack.green;
 const printError = chalk.bgBlack.bold.red;

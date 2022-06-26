@@ -1,6 +1,6 @@
 const constantes = require("../../util/const");
 const {spinner, printError} = require("../../util/config");
-const lng = require("../../util/en");
+const {exec} = require("child_process");
 exports.command = 'status'
 exports.builder = {
     path: {
