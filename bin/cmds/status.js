@@ -1,6 +1,5 @@
 const constantes = require("../../util/const");
-const {spinner, printError} = require("../../util/config");
-const {exec} = require("child_process");
+const {printError, ejectCommand} = require("../../util/config");
 exports.command = 'status'
 exports.builder = {
     path: {
@@ -9,16 +8,9 @@ exports.builder = {
 }
 exports.desc = 'Check status of push service'
 exports.handler = function () {
-    console.log('Status');
-    exec('systemctl status ' + constantes.appName, (error, stdout, stderr) => {
-        if (error) {
-            spinner.fail(printError(error));
-            return;
-        }
-        if (stderr) {
-            spinner.fail(printError(stderr));
-            return;
-        }
-        console.log(stdout);
-    })
+    ejectCommand('systemctl status ' + constantes.appName).then((response)=>{
+        console.log(response);
+    }).catch(e=>{
+        console.log(printError(stderr));
+    });
 }

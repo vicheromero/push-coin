@@ -5,6 +5,7 @@ const lng = require("../../util/en");
 exports.command = 'uninstall'
 exports.desc = 'Uninstall push service'
 exports.handler = function () {
+    spinner.start();
     spinner.info(printInfo("Desinstalando"));
     spinner.start();
     ejectCommand('sudo systemctl stop '+ constantes.appName).then(()=>{
