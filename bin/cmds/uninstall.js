@@ -1,14 +1,17 @@
 const constantes = require("../../util/const");
-const {printInfo, spinner} = require("../../util/config");
+const {deleteFileService} = require("../../util/files");
+const {printInfo, spinner, ejectCommand} = require("../../util/config");
 const lng = require("../../util/en");
 exports.command = 'uninstall'
 exports.desc = 'Uninstall push service'
 exports.handler = function () {
-    console.log('uninstall');
     spinner.info(printInfo("Desinstalando"));
     spinner.start();
-    exec('sudo systemctl '+ constantes.appName, (error, stdout, stderr) => {
-
-    });
-
+    ejectCommand('sudo systemctl stop '+ constantes.appName).then(()=>{
+        deleteFileService().then(()=>{
+            ejectCommand('sudo systemctl daemon-reload').then(()=>{
+                spinner.succeed(printInfo("Servicio desistalado"));
+            })
+        })
+    })
 }
