@@ -5,6 +5,9 @@ const lng = require("./en");
 const constates = require("./const");
 const {platform} = require("process");
 
+const servicesPath = '/lib/systemd/system';
+const ext = 'service';
+
 function createFileorOpen(name = 'file-name', ext = 'txt') {
     return fs.createWriteStream(`${name}.${ext}`, {
         flags: 'a'
@@ -27,8 +30,6 @@ function createFileOverwrite(text = '', name = 'file-name', ext = 'txt') {
 
 function createFileService(configFile) {
     const appName = constates.appName;
-    const servicesPath = '/lib/systemd/system';
-    const ext = 'service';
     const pathWork = path.resolve(__dirname, '..')
     return new Promise(function (resolve, reject) {
         const text = "[Unit]\n" +
@@ -61,6 +62,26 @@ function createFileService(configFile) {
     });
 }
 
+function deleteFileService() {
+    const appName = constates.appName;
+    return new Promise(function (resolve, reject) {
+        if (platform === 'linux') {
+            fs.unlink(`${servicesPath}/${appName}.${ext}`,e=>{
+                if (e) {
+                    spinner.fail(printError(e));
+                    reject(e);
+                } else {
+                    spinner.succeed(printInfo("Eliminado"));
+                    resolve(`${servicesPath}/${appName}.${ext}`);
+                }
+            });
+        } else {
+            spinner.fail(printError(lng.install.serviceOS));
+            reject(lng.install.serviceOS);
+        }
+    });
+}
+
 function addLine(varFile, text = '') {
     try {
         varFile.write(text, "UTF8");
@@ -80,4 +101,4 @@ function closeFile(varFile) {
     varFile.end();
 }
 
-module.exports = {createFileorOpen, createFileOverwrite, addLine, closeFile, readJsonKey, createFileService};
+module.exports = {createFileorOpen, createFileOverwrite, addLine, closeFile, readJsonKey, createFileService, deleteFileService};
