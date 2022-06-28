@@ -31,10 +31,16 @@ cd node-v11.9.0-linux-armv6l
 ````shell
 sudo cp -R * /usr/local/
 ````
+
+````shell
+sudo chown -R $USER /usr/local/lib/node_modules
+````
+
+
 ### Instalación de programa
 
 ````shell
-npm install -g https://github.com/serobalino/push-coin
+sudo npm install -g push-coin
 ````
 
 ## Ejecución

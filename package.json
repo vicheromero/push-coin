@@ -1,5 +1,5 @@
 {
-  "name": "ras-push-cli",
+  "name": "push-coin",
   "version": "1.0.0",
   "description": "\"cli demo app\"",
   "main": "bin/index.js",
@@ -13,8 +13,8 @@
   "author": "SD",
   "license": "MIT",
   "bin": {
-    "push-coin": "./bin/index.js",
-    "push-coin-service": "./bin/service.js"
+    "push-coin": "bin/index.js",
+    "push-coin-service": "bin/service.js"
   },
   "dependencies": {
     "axios": "^0.26.1",
@@ -24,5 +24,10 @@
     "pusher-js": "^7.0.6",
     "validator": "^13.7.0",
     "yargs": "^14.1.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/serobalino/push-coin/issues"
+  },
+  "homepage": "https://github.com/serobalino/push-coin#readme",
+  "devDependencies": {}
 }
