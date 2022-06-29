@@ -35,11 +35,15 @@ function getKey(path, key) {
     }
 }
 
-function ejectCommand(command,msgError) {
+function ejectCommand(command,msgError=null) {
     return new Promise(function (resolve, reject) {
         exec(command, (error, stdout, stderr) => {
+            if(stdout){
+                resolve(stdout);
+                return stdout;
+            }
             if(error){
-                console.log(printError(msgError && error));
+                console.log(printError(msgError || error));
                 reject(error)
                 return error;
             }
@@ -48,7 +52,6 @@ function ejectCommand(command,msgError) {
                 reject(stderr)
                 return stderr;
             }
-            resolve(stdout);
         })
     })
 }

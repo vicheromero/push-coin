@@ -31,7 +31,6 @@ function createFileOverwrite(text = '', name = 'file-name', ext = 'txt') {
 function createFileService(configFile) {
     const appName = constates.appName;
     const pathWork = path.resolve();
-    const fileConcat = path.join(pathWork,configFile);
     return new Promise(function (resolve, reject) {
         const text = "[Unit]\n" +
             "Description=" + appName + " service" + "\n" +
@@ -41,7 +40,7 @@ function createFileService(configFile) {
             "Restart=always\n" +
             "User=nobody\n" +
             "Group=nogroup\n" +
-            "ExecStart=push-coin-service configure " + fileConcat + "\n" +
+            "ExecStart=push-coin-service configure " + configFile + "\n" +
             "WorkingDirectory=" + pathWork + "\n" +
             "\n" +
             "[Install]\n" +
@@ -92,7 +91,7 @@ function addLine(varFile, text = '') {
 }
 
 function readJsonKey(file, key) {
-    const filePath = path.resolve(__dirname, '..', file);
+    const filePath = path.resolve(file);
     let data = fs.readFileSync(filePath + '.json', 'utf8');
     data = JSON.parse(data);
     return data[key];
