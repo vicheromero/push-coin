@@ -11,6 +11,6 @@ exports.handler = function () {
     ejectCommand('systemctl status ' + constantes.appName).then((response)=>{
         console.log(response);
     }).catch(e=>{
-        console.log(printError(stderr));
+        console.log(printError(e));
     });
 }

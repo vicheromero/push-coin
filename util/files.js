@@ -31,6 +31,7 @@ function createFileOverwrite(text = '', name = 'file-name', ext = 'txt') {
 function createFileService(configFile) {
     const appName = constates.appName;
     const pathWork = path.resolve();
+    const fileConcat = pathWork.join(configFile);
     return new Promise(function (resolve, reject) {
         const text = "[Unit]\n" +
             "Description=" + appName + " service" + "\n" +
@@ -40,7 +41,7 @@ function createFileService(configFile) {
             "Restart=always\n" +
             "User=nobody\n" +
             "Group=nogroup\n" +
-            "ExecStart=push-coin-service configure " + configFile + "\n" +
+            "ExecStart=push-coin-service configure " + fileConcat + "\n" +
             "WorkingDirectory=" + pathWork + "\n" +
             "\n" +
             "[Install]\n" +
