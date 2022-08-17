@@ -18,7 +18,11 @@ api.interceptors.response.use(
         return response.status === 200 ? response.data : response;
     },
     (error) => {
-        console.error(error);
+        if(error?.response?.data){
+            console.error(error?.response?.data);
+        }else{
+            console.error("Error al conectar con "+error.config.baseURL+" revisa el archivo de configuración");
+        }
         return Promise.reject(error)
     }
 )
