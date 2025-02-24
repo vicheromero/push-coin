@@ -1,10 +1,12 @@
 {
   "name": "push-coin",
-  "version": "1.0.5",
-  "description": "\"cli demo app\"",
+  "version": "1.0.6",
+  "description": "CLI para control remoto de dispositivos",
   "main": "bin/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node bin/service.js configure wfg.cfg",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo \"No build step required\" && exit 0"
   },
   "repository": {
     "type": "git",
@@ -13,7 +15,7 @@
   "author": "SD",
   "license": "MIT",
   "bin": {
-    "push-coin": "bin/index.js",
+    "push-coin": "./bin/index.js",
     "push-coin-service": "bin/service.js"
   },
   "dependencies": {
@@ -29,5 +31,6 @@
     "url": "https://github.com/serobalino/push-coin/issues"
   },
   "homepage": "https://github.com/serobalino/push-coin#readme",
-  "devDependencies": {}
+  "devDependencies": {},
+  "preferGlobal": true
 }

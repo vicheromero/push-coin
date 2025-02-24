@@ -14,7 +14,10 @@ function subscribePush(config, deviceId, configPath) {
     const pusher = new Pusher(config.key, {
         cluster: config.cluster
     });
-    api.defaults.baseURL = getKey(configPath, "URL_API");
+    
+    const baseURL = getKey(configPath, "URL_API");
+    api.setBaseURL(baseURL);
+    
     spinner.succeed(printInfo(lng.push.config));
     let channel = pusher.subscribe(deviceId);
     spinner.succeed(printInfo(lng.push.sub));

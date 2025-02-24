@@ -21,7 +21,8 @@ exports.handler = function (argv) {
     const idDevice = getKey(argv.path, "ID");
     if (idDevice) {
         spinner.info(printInfo(lng.install.start, idDevice));
-        api.defaults.baseURL = getKey(argv.path, "URL_API");
+        const baseURL = getKey(argv.path, "URL_API");
+        api.setBaseURL(baseURL);
         spinner.info(printInfo(lng.steps.start));
         spinner.start();
         equipos.getId(idDevice).then((response) => {

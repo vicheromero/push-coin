@@ -1,4 +1,6 @@
 const axios = require("axios");
+const {printError} = require("./config");
+const {normalizeURL} = require("./url");
 
 const headers = {
     'Content-Type': 'application/json',
@@ -6,6 +8,13 @@ const headers = {
 };
 
 const api = axios.create();
+
+function setBaseURL(url) {
+    if (!url) {
+        throw new Error("URL_API no está definida en el archivo de configuración");
+    }
+    api.defaults.baseURL = normalizeURL(url);
+}
 
 api.defaults.headers = headers;
 api.interceptors.request.use(
@@ -27,4 +36,7 @@ api.interceptors.response.use(
     }
 )
 
-module.exports = api;
+module.exports = {
+    ...api,
+    setBaseURL
+};
