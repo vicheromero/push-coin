@@ -44,6 +44,11 @@ sudo npm install -g push-coin
 ````
 
 ## Ejecución
+### Permisos
+Recuerda dar permisos de ejecucion al directorio donde esta tu archivo de configuracion *cfg* 
+````shell
+chmod 755 /home/jhon_doe
+````
 ### Instalación
 Recuerda ejecutar el instalador con permisos de administrador y el archivo de configuración
 ````shell
